@@ -17,7 +17,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
 <!-- DM Sans via Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   /* ============================================================
@@ -89,7 +89,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     gap: 24px;
   }
   .site-header__logo img {
-    height: 28px;
+    height: 38px;
     width: auto;
   }
   .site-header__pin-link {
@@ -160,12 +160,13 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
   }
   .hero__headline-secondary {
     display: block;
+    font-family: var(--font-body);
     font-weight: 400;
     color: var(--t-text-2);
-    font-size: 0.6em;
-    line-height: 1.2;
-    margin-top: 0.3em;
-    letter-spacing: -0.015em;
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.4;
+    margin-top: 24px;
+    letter-spacing: 0;
   }
 
   .hero__cta-row {
@@ -673,7 +674,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
   <header class="site-header">
     <div class="site-header__inner">
       <a href="/" class="site-header__logo" aria-label="BlindRank">
-        <img src="./assets/images/blindrank-logo-notag.svg" alt="BlindRank" style="height: 28px; width: auto;">
+        <img src="./assets/images/blindrank-logo-notag.svg" alt="BlindRank" style="height: 38px; width: auto;">
       </a>
       <a href="/pin" class="site-header__pin-link">Tenho um PIN</a>
     </div>
@@ -755,7 +756,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
         </div>
         <div class="moment__visual">
           <div class="moment__device">
-            <img src="./assets/images/blindrank-step-tasting-progresso.png" alt="StepTasting do BlindRank em progresso">
+            <img src="./assets/images/blindrank-step-tasting-inicio.png" alt="StepTasting do BlindRank no início — vinhos numerados">
           </div>
         </div>
       </article>

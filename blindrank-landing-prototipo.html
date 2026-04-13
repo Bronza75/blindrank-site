@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlindRank — Organizador de degustações de vinho</title>
+<meta name="description" content="Organizador de degustações de vinho com ranking coletivo. Às cegas ou às claras. Registro permanente. Para confrarias, sommeliers e quem leva vinho a sério.">
+
+<!-- PostHog Analytics -->
+<script>!function(t,e){var o,n,p,r;e.__SV||(window.posthog&&window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init os ds Ie us vs ss ls capture calculateEventProperties register register_once register_for_session unregister unregister_for_session ws getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty bs ps createPersonProfile setInternalOrTestUser ys es $s opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing cs debug M gs getPageViewId captureTraceFeedback captureTraceMetric Qr".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https://us.i.posthog.com",defaults:"2026-01-30"});</script>
+
+<!-- Eudoxus Sans via Fontshare (free CDN) -->
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=eudoxus-sans@400,500,600&display=swap" rel="stylesheet">
+
+<!-- DM Sans via Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     RESET & TOKENS — copiados do design system canônico do BlindRank
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; border: none; background: none; }
+
+  :root {
+    /* Cores — design system canônico */
+    --t-bg: #ffffff;
+    --t-text-1: #0a0a0a;
+    --t-text-2: #3a3a3a;
+    --t-text-3: #767676;          /* ajustado para WCAG AA (≥4.5:1) */
+    --t-text-4: #bbbbbb;
+    --t-text-5: #e8e4de;
+
+    --t-accent: #8B1A00;          /* CTA bordô — exclusivo */
+    --t-accent-hover: #6B1200;
+
+    --tier-1: #C04000;            /* Destaque terracota */
+    --tier-2: #C47820;            /* Intermediário âmbar */
+    --tier-3: #F0D080;            /* Base dourado */
+
+    --t-stroke: #0a0a0a;
+    --t-rule: rgba(10,10,10,0.08);
+    --t-rule-strong: rgba(10,10,10,0.15);
+
+    /* Tipografia */
+    --font-display: 'Eudoxus Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+
+    /* Layout */
+    --max-w: 1240px;
+    --gutter: clamp(20px, 4vw, 56px);
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--t-text-1);
+    background: var(--t-bg);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    font-size: 16px;
+  }
+
+  /* ============================================================
+     HEADER — minimalista, sem nav central
+     ============================================================ */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: saturate(140%) blur(8px);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--t-rule);
+  }
+  .site-header__inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 18px var(--gutter);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .site-header__logo img {
+    height: 28px;
+    width: auto;
+  }
+  .site-header__pin-link {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--t-text-2);
+    font-weight: 500;
+    transition: color 200ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .site-header__pin-link:hover { color: var(--t-accent); }
+  .site-header__pin-link::after {
+    content: "→";
+    transition: transform 200ms ease;
+  }
+  .site-header__pin-link:hover::after { transform: translateX(3px); }
+
+  /* ============================================================
+     HERO — alinhado à esquerda, headline hierarquizada
+     ============================================================ */
+  .hero {
+    position: relative;
+    padding: clamp(64px, 10vh, 120px) var(--gutter) clamp(80px, 14vh, 140px);
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .hero__eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--t-accent);
+    margin-bottom: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero__eyebrow::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--t-accent);
+  }
+
+  .hero__headline {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6.4vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    color: var(--t-text-1);
+    margin-bottom: 36px;
+  }
+  .hero__headline-line {
+    display: block;
+  }
+  .hero__headline-emphasis {
+    color: var(--tier-1);
+    font-weight: 600;
+  }
+  .hero__headline-secondary {
+    display: block;
+    font-weight: 400;
+    color: var(--t-text-2);
+    font-size: 0.6em;
+    line-height: 1.2;
+    margin-top: 0.3em;
+    letter-spacing: -0.015em;
+  }
+
+  .hero__cta-row {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+
+  .btn-accent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    padding: 0 32px;
+    background: var(--t-accent);
+    color: #ffffff;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: background 200ms ease, transform 200ms ease;
+    letter-spacing: -0.005em;
+  }
+  .btn-accent:hover {
+    background: var(--t-accent-hover);
+    transform: translateY(-1px);
+  }
+
+  .hero__secondary-link {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--t-text-2);
+    font-weight: 500;
+    border-bottom: 1px solid var(--t-rule-strong);
+    padding-bottom: 2px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .hero__secondary-link:hover {
+    color: var(--t-text-1);
+    border-color: var(--t-text-1);
+  }
+
+  /* Hero device — screenshot real do StepTasting */
+  .hero__device {
+    position: relative;
+    justify-self: end;
+    width: 100%;
+    max-width: 340px;
+  }
+  .hero__device-frame {
+    position: relative;
+    border-radius: 36px;
+    background: #f6f4f0;
+    padding: 12px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 12px 40px rgba(0,0,0,0.10),
+      0 30px 80px rgba(0,0,0,0.06);
+    border: 1px solid rgba(10,10,10,0.06);
+  }
+  .hero__device-frame img {
+    border-radius: 26px;
+    width: 100%;
+    display: block;
+  }
+
+  /* Decoração: número editorial gigante atrás do device */
+  .hero__device::before {
+    content: "01";
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 220px;
+    line-height: 0.8;
+    color: rgba(192,64,0,0.06);
+    top: -40px;
+    left: -80px;
+    z-index: -1;
+    letter-spacing: -0.04em;
+    pointer-events: none;
+  }
+
+  /* ============================================================
+     RULE — separadores editoriais
+     ============================================================ */
+  .rule {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  .rule__line {
+    height: 1px;
+    background: var(--t-rule-strong);
+  }
+
+  /* ============================================================
+     SECTION — base
+     ============================================================ */
+  .section {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: clamp(80px, 12vh, 140px) var(--gutter);
+  }
+
+  .section__eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--t-text-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section__eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  /* ============================================================
+     COMO FUNCIONA — três passos editoriais, sem cards
+     ============================================================ */
+  .how {
+    padding-top: clamp(80px, 12vh, 140px);
+    padding-bottom: clamp(80px, 12vh, 140px);
+  }
+  .how__header {
+    margin-bottom: 80px;
+    max-width: 720px;
+  }
+  .how__title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.8vw, 56px);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-top: 24px;
+    color: var(--t-text-1);
+  }
+
+  .how__steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  .how__step {
+    position: relative;
+  }
+  .how__step-number {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(96px, 12vw, 140px);
+    line-height: 0.85;
+    color: var(--t-text-5);
+    margin-bottom: 24px;
+    letter-spacing: -0.04em;
+  }
+  .how__step-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: var(--t-text-1);
+    letter-spacing: -0.01em;
+  }
+  .how__step-text {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--t-text-2);
+    max-width: 32ch;
+  }
+
+  /* ============================================================
+     SEQUÊNCIA DE MOMENTOS — alternada
+     ============================================================ */
+  .moments {
+    background: #fafaf8;
+    border-top: 1px solid var(--t-rule);
+    border-bottom: 1px solid var(--t-rule);
+  }
+  .moments__inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: clamp(80px, 12vh, 140px) var(--gutter);
+  }
+  .moments__header {
+    margin-bottom: 96px;
+    max-width: 720px;
+  }
+  .moments__title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.8vw, 56px);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-top: 24px;
+    color: var(--t-text-1);
+  }
+
+  .moment {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 120px);
+    align-items: center;
+    padding: clamp(60px, 8vh, 100px) 0;
+    border-bottom: 1px solid var(--t-rule);
+    position: relative;
+  }
+  .moment:last-child { border-bottom: none; }
+  .moment--reverse .moment__content { order: 2; }
+  .moment--reverse .moment__visual { order: 1; }
+
+  .moment__number {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--t-accent);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .moment__number::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--t-accent);
+  }
+  .moment__title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    margin-bottom: 20px;
+    color: var(--t-text-1);
+    max-width: 14ch;
+  }
+  .moment__text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--t-text-2);
+    max-width: 44ch;
+  }
+  .moment__visual {
+    display: flex;
+    justify-content: center;
+  }
+  .moment__device {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    border-radius: 32px;
+    background: #f6f4f0;
+    padding: 10px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 16px 50px rgba(0,0,0,0.10);
+    border: 1px solid rgba(10,10,10,0.06);
+  }
+  .moment__device img {
+    border-radius: 24px;
+    width: 100%;
+    display: block;
+  }
+
+  /* ============================================================
+     PARA QUEM É — bloco de texto editorial
+     ============================================================ */
+  .audience {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: clamp(100px, 14vh, 160px) var(--gutter);
+  }
+  .audience__inner {
+    max-width: 880px;
+  }
+  .audience__text {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.4vw, 40px);
+    line-height: 1.25;
+    font-weight: 400;
+    color: var(--t-text-1);
+    letter-spacing: -0.018em;
+    margin-top: 32px;
+  }
+  .audience__text strong {
+    font-weight: 600;
+    color: var(--tier-1);
+  }
+  .audience__rule {
+    margin-top: 56px;
+    width: 64px;
+    height: 2px;
+    background: var(--t-text-1);
+  }
+
+  /* ============================================================
+     MÉTODO — colofão técnico estilo ficha de revista
+     ============================================================ */
+  .method {
+    background: var(--t-text-1);
+    color: #f5f3f0;
+  }
+  .method__inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: clamp(80px, 12vh, 120px) var(--gutter);
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  .method__eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--tier-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .method__eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+  }
+  .method__title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.6vw, 44px);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    margin-top: 20px;
+    color: #ffffff;
+  }
+  .method__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .method__item {
+    padding-bottom: 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 32px;
+    align-items: baseline;
+  }
+  .method__item:last-child { border-bottom: none; padding-bottom: 0; }
+  .method__item-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--tier-3);
+  }
+  .method__item-text {
+    font-size: 16px;
+    line-height: 1.55;
+    color: #e8e4de;
+  }
+  .method__item-text em {
+    font-style: italic;
+    color: #ffffff;
+  }
+
+  /* ============================================================
+     CTA FINAL — centralizado, contraste com hero
+     ============================================================ */
+  .cta-final {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: clamp(120px, 16vh, 180px) var(--gutter);
+    text-align: center;
+  }
+  .cta-final__title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 1.0;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--t-text-1);
+    margin-bottom: 24px;
+  }
+  .cta-final__text {
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--t-text-2);
+    max-width: 480px;
+    margin: 0 auto 48px;
+  }
+
+  /* ============================================================
+     FOOTER — uma linha
+     ============================================================ */
+  .site-footer {
+    border-top: 1px solid var(--t-rule);
+    padding: 32px var(--gutter);
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .site-footer__brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--t-text-1);
+    letter-spacing: -0.01em;
+  }
+  .site-footer__brand .dot { color: var(--tier-1); }
+  .site-footer__meta {
+    font-size: 12px;
+    color: var(--t-text-3);
+  }
+  .site-footer__links {
+    display: flex;
+    gap: 24px;
+  }
+  .site-footer__links a {
+    font-size: 12px;
+    color: var(--t-text-3);
+    transition: color 200ms ease;
+  }
+  .site-footer__links a:hover { color: var(--t-text-1); }
+
+  /* ============================================================
+     SCROLL-DRIVEN ANIMATIONS — progressive enhancement
+     ============================================================ */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+    @keyframes reveal-fade-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ============================================================
+     RESPONSIVE — mobile first refinement
+     ============================================================ */
+  @media (max-width: 880px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 56px;
+      padding-bottom: 80px;
+      gap: 56px;
+    }
+    .hero__device {
+      max-width: 280px;
+      justify-self: center;
+    }
+    .hero__device::before { display: none; }
+
+    .how__steps { grid-template-columns: 1fr; gap: 56px; }
+    .how__step-number { font-size: 88px; }
+
+    .moment, .moment--reverse {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 56px 0;
+    }
+    .moment--reverse .moment__content { order: 2; }
+    .moment--reverse .moment__visual { order: 1; }
+    .moment__device { max-width: 260px; }
+
+    .method__inner { grid-template-columns: 1fr; gap: 40px; }
+    .method__item { grid-template-columns: 1fr; gap: 8px; }
+
+    .site-footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="/" class="site-header__logo" aria-label="BlindRank">
+        <img src="./blindrank-logo-notag.svg" alt="BlindRank" style="height: 28px; width: auto;">
+      </a>
+      <a href="/pin" class="site-header__pin-link">Tenho um PIN</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="hero__content">
+      <div class="hero__eyebrow">blindrank.wine</div>
+
+      <h1 class="hero__headline">
+        <span class="hero__headline-line">O ranking que faltava</span>
+        <span class="hero__headline-line hero__headline-emphasis">na sua mesa.</span>
+        <span class="hero__headline-secondary">Organize degustações de vinho com resultado justo — às cegas ou às claras.</span>
+      </h1>
+
+      <div class="hero__cta-row">
+        <a href="/auth" class="btn-accent">Criar minha primeira degustação</a>
+        <a href="/pin" class="hero__secondary-link">Tenho um PIN para entrar</a>
+      </div>
+    </div>
+
+    <div class="hero__device">
+      <div class="hero__device-frame">
+        <img src="./blindrank-step-tasting-progresso.png" alt="Tela de avaliação às cegas no BlindRank — vinhos numerados e painel de notas">
+      </div>
+    </div>
+  </section>
+
+  <!-- Separador editorial -->
+  <div class="rule"><div class="rule__line"></div></div>
+
+  <!-- ============================================================
+       COMO FUNCIONA
+       ============================================================ -->
+  <section class="how section">
+    <div class="how__header reveal">
+      <div class="section__eyebrow">Em três passos</div>
+      <h2 class="how__title">Da garrafa fechada ao ranking do grupo.</h2>
+    </div>
+
+    <div class="how__steps">
+      <div class="how__step reveal">
+        <div class="how__step-number">01</div>
+        <h3 class="how__step-title">Você cria a degustação</h3>
+        <p class="how__step-text">Define os vinhos, escolhe o modo (às cegas ou às claras), o método de avaliação e gera um PIN único para a mesa.</p>
+      </div>
+      <div class="how__step reveal">
+        <div class="how__step-number">02</div>
+        <h3 class="how__step-title">Os degustadores entram pelo PIN</h3>
+        <p class="how__step-text">Sem cadastro, sem app pra instalar. Cada um avalia no próprio celular, às cegas, sem ver o que os outros estão dando.</p>
+      </div>
+      <div class="how__step reveal">
+        <div class="how__step-number">03</div>
+        <h3 class="how__step-title">O ranking se forma</h3>
+        <p class="how__step-text">Quando todos terminam, o sistema compila um ranking coletivo. Você revela os rótulos quando quiser. O resultado fica para sempre.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SEQUÊNCIA DE MOMENTOS
+       ============================================================ -->
+  <section class="moments">
+    <div class="moments__inner">
+      <div class="moments__header reveal">
+        <div class="section__eyebrow">No celular do degustador</div>
+        <h2 class="moments__title">A experiência de quem está na mesa.</h2>
+      </div>
+
+      <!-- Momento 1 — avaliando -->
+      <article class="moment reveal">
+        <div class="moment__content">
+          <div class="moment__number">Momento um</div>
+          <h3 class="moment__title">Toque no número, escolha a nota.</h3>
+          <p class="moment__text">Os vinhos aparecem só por número. O degustador toca, o painel sobe, ele dá a nota e passa pro próximo. Tipografia grande, alto contraste — legível à meia-luz de restaurante, sem óculos de leitura.</p>
+        </div>
+        <div class="moment__visual">
+          <div class="moment__device">
+            <img src="./blindrank-step-tasting-progresso.png" alt="StepTasting do BlindRank em progresso">
+          </div>
+        </div>
+      </article>
+
+      <!-- Momento 2 — terminado -->
+      <article class="moment moment--reverse reveal">
+        <div class="moment__content">
+          <div class="moment__number">Momento dois</div>
+          <h3 class="moment__title">As cores aparecem. O ranking pessoal se monta sozinho.</h3>
+          <p class="moment__text">Cada nota colore o vinho com seu tier — destaque, intermediário ou base. O degustador vê o seu próprio ranking se formando enquanto avalia. Sem planilha, sem confusão, sem lápis no guardanapo.</p>
+        </div>
+        <div class="moment__visual">
+          <div class="moment__device">
+            <img src="./blindrank-step-tasting-completo.png" alt="StepTasting completo com todos os vinhos avaliados">
+          </div>
+        </div>
+      </article>
+
+      <!-- Momento 3 — espera + ranking -->
+      <article class="moment reveal">
+        <div class="moment__content">
+          <div class="moment__number">Momento três</div>
+          <h3 class="moment__title">O suspense da espera. O drama da revelação.</h3>
+          <p class="moment__text">Quando termina, o degustador vê o seu favorito em destaque e a fila de quem ele enviou. Aguarda os outros. O organizador revela os rótulos no momento certo — e a mesa descobre, todos juntos, o que cada vinho era de verdade.</p>
+        </div>
+        <div class="moment__visual">
+          <div class="moment__device">
+            <img src="./blindrank-aguardando-resultado.png" alt="Tela de aguardando o resultado com favorito destacado">
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PARA QUEM É
+       ============================================================ -->
+  <section class="audience">
+    <div class="audience__inner reveal">
+      <div class="section__eyebrow">Para quem é</div>
+      <p class="audience__text">
+        Para confrarias que cansaram do Excel. Para sommeliers que querem rigor sem fricção. Para importadores que precisam de uma ata que não suma no dia seguinte. <strong>Para quem acredita que vinho não se julga pelo rótulo.</strong>
+      </p>
+      <div class="audience__rule"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MÉTODO — colofão técnico
+       ============================================================ -->
+  <section class="method">
+    <div class="method__inner">
+      <div class="method__sidebar reveal">
+        <div class="method__eyebrow">Sob o capô</div>
+        <h2 class="method__title">A matemática do julgamento justo.</h2>
+      </div>
+      <ul class="method__list reveal">
+        <li class="method__item">
+          <span class="method__item-label">Agregação</span>
+          <span class="method__item-text">Média simples como base. <em>Trimmed mean</em> opcional para cortar extremos quando há cinco ou mais avaliadores — a mesma técnica que o ISU usa para julgar patinação artística olímpica.</span>
+        </li>
+        <li class="method__item">
+          <span class="method__item-label">Ranking coletivo</span>
+          <span class="method__item-text"><em>Borda Count</em> para método ranking, formalizado por Young (1974). É o sistema que compõe ordem coletiva a partir de ordens individuais sem privilegiar extremos.</span>
+        </li>
+        <li class="method__item">
+          <span class="method__item-label">Desempate</span>
+          <span class="method__item-text">Cascata <em>Olympic Average → desvio padrão → nota mínima</em>. Três níveis até resolver. Na prática, empate não acontece.</span>
+        </li>
+        <li class="method__item">
+          <span class="method__item-label">Acervo</span>
+          <span class="method__item-text">Toda degustação fica salva. Toda nota fica salva. Você pode comparar a mesma garrafa em dois jantares diferentes, dois anos depois. <em>Registro permanente.</em></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA FINAL
+       ============================================================ -->
+  <section class="cta-final">
+    <h2 class="cta-final__title reveal">Pronto pra primeira?</h2>
+    <p class="cta-final__text reveal">A criação leva dois minutos. A degustação leva o tempo do jantar. O resultado fica para sempre.</p>
+    <div class="reveal">
+      <a href="/auth" class="btn-accent">Criar minha primeira degustação</a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="site-footer__brand">BlindRank<span class="dot">.</span></div>
+    <div class="site-footer__links">
+      <a href="/termos">Termos</a>
+      <a href="/privacidade">Privacidade</a>
+      <a href="mailto:contato@blindrank.wine">Contato</a>
+    </div>
+    <div class="site-footer__meta">blindrank.wine · 2026</div>
+  </footer>
+
+</body>
+</html>

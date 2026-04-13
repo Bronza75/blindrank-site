@@ -4,7 +4,7 @@
 BlindRank Site — Landing page do BlindRank (organizador de degustacoes de vinho com ranking coletivo). Site institucional/marketing que apresenta o produto e direciona para o app (`blindrank.wine`).
 
 ## Fase Atual
-Fase 0: Prototipo estatico. HTML puro (857 linhas), sem framework, sem build, sem deploy.
+Fase 1: Deploy do prototipo. Site no ar em `blindrank-site.vercel.app`. GitHub `Bronza75/blindrank-site` com auto-deploy.
 
 ## Relacao com o App Principal
 O app de producao vive em `../blindrank/` (Next.js 14 + Supabase + Vercel). Este repositorio e exclusivamente o site institucional — nao compartilha codigo, mas compartilha design system, fontes e assets visuais.
@@ -19,7 +19,7 @@ O app de producao vive em `../blindrank/` (Next.js 14 + Supabase + Vercel). Este
 
 ## Stack
 
-- **HTML5 estatico** — arquivo unico `blindrank-landing-prototipo.html`
+- **HTML5 estatico** — arquivo unico `index.html`
 - **CSS3 embutido** — tokens do design system canonico do BlindRank
 - **Fontes via CDN**: Eudoxus Sans (Fontshare), DM Sans + Playfair Display (Google Fonts)
 - **Sem JavaScript** — animacoes via CSS (`animation-timeline: view()`, scroll-driven)
@@ -77,18 +77,32 @@ O app de producao vive em `../blindrank/` (Next.js 14 + Supabase + Vercel). Este
 
 ---
 
-## Assets
+## Estrutura de arquivos
+
+```
+/
+├── index.html
+├── assets/
+│   └── images/              (todos os assets visuais)
+├── CLAUDE.md
+├── PLANNING.md
+├── TASKS.md
+├── .claude/
+├── .env                     (PostHog keys — no .gitignore)
+└── .gitignore
+```
+
+## Assets (`assets/images/`)
 
 | Arquivo | Descricao |
 |---------|-----------|
 | `blindrank-logo-notag.svg` | Logo SVG com blur + stroke |
-| `blindrank-logo-notag-780.png` | Logo PNG 780px |
-| `blindrank-logo-notag-1560.png` | Logo PNG 1560px |
-| `blindrank-logo-notag-3120.png` | Logo PNG 3120px |
+| `blindrank-logo-notag-transparent-780.png` | Logo PNG transparente 780px |
+| `blindrank-logo-notag-transparent-1560.png` | Logo PNG transparente 1560px |
+| `blindrank-logo-notag-transparent-3120.png` | Logo PNG transparente 3120px |
+| `blindrank-logo-notag-white-3120.png` | Logo PNG fundo branco 3120px |
 | `blindrank-icon-bordo-512.png` | Icone bordo 512px |
-| `blindrank-icon-bordo-1024.png` | Icone bordo 1024px |
 | `blindrank-icon-inverted-512.png` | Icone invertido 512px |
-| `blindrank-icon-inverted-1024.png` | Icone invertido 1024px |
 | `blindrank-icon-primary-512.png` | Icone primario 512px |
 | `blindrank-icon-primary-1024.png` | Icone primario 1024px |
 | `blindrank-step-tasting-inicio.png` | Screenshot: tela de avaliacao (inicio) |

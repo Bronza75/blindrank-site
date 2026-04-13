@@ -1,14 +1,14 @@
 # TASKS.md
 
 ## Contexto
-Fase ativa: Fase 0 — Prototipo estatico. Landing page em HTML puro, sem deploy.
+Fase ativa: Fase 1 — Deploy do prototipo. Site no ar em `blindrank-site.vercel.app`, GitHub conectado (auto-deploy).
 Regra: trabalhar em uma task por vez e sempre citar o ID da task.
 
 ## Pendente
 
 ### Bloco A — Deploy do prototipo
-- [ ] SITE-A1 — Inicializar repositorio git + primeiro commit
-- [ ] SITE-A2 — Deploy estatico no Vercel (HTML direto, sem framework)
+- [x] SITE-A1 — Inicializar repositorio git + primeiro commit
+- [x] SITE-A2 — Deploy estatico no Vercel (HTML direto, sem framework)
 - [ ] SITE-A3 — Configurar dominio `blindrank.wine` no Vercel
 - [ ] SITE-A4 — Adicionar favicon (usar `blindrank-icon-bordo-512.png` como base)
 - [ ] SITE-A5 — Adicionar Open Graph tags + Twitter Card (titulo, descricao, imagem)
@@ -41,3 +41,5 @@ Regra: trabalhar em uma task por vez e sempre citar o ID da task.
 ### 2026-04-13
 - [x] SITE-DOC — Criar CLAUDE.md, PLANNING.md e TASKS.md para o projeto
 - [x] SITE-B4 — Adicionar analytics PostHog (wizard `@posthog/wizard`, snippet inline no HTML, public token)
+- [x] SITE-A1 — Git init + primeiro commit (`07e0fcd`, 19 arquivos). Repo: `Bronza75/blindrank-site`
+- [x] SITE-A2 — Deploy Vercel producao: `blindrank-site.vercel.app`. GitHub conectado (auto-deploy em push)

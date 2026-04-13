@@ -4,7 +4,7 @@
 Transformar o prototipo estatico da landing page do BlindRank em site de producao, deployado em `blindrank.wine`, servindo como porta de entrada para o app.
 
 ## Fase Atual
-**Fase 0: Prototipo estatico.** HTML puro, sem deploy, sem versionamento. Conteudo e design system validados visualmente.
+**Fase 1: Deploy do prototipo.** Site no ar em `blindrank-site.vercel.app`. GitHub `Bronza75/blindrank-site` com auto-deploy. Dominio custom pendente.
 
 ---
 
@@ -54,5 +54,5 @@ So migrar se houver necessidade real (i18n, blog, componentes dinamicos).
 
 ## Concluido
 
-**2026-04-13 — Documentacao do projeto**
-Criados `CLAUDE.md`, `PLANNING.md` e `TASKS.md` com base no prototipo existente e alinhados ao padrao do repositorio principal (`../blindrank/`).
+**2026-04-13 — Documentacao + deploy**
+Criados `CLAUDE.md`, `PLANNING.md` e `TASKS.md`. PostHog analytics integrado (snippet inline). Git inicializado, repo `Bronza75/blindrank-site` criado, deploy Vercel producao em `blindrank-site.vercel.app` com auto-deploy via GitHub.

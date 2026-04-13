@@ -273,6 +273,11 @@
       inputs.forEach(i => {
         i.classList.toggle('filled', i.value.length > 0);
       });
+      if (pin.length === 4) {
+        setTimeout(() => {
+          window.location.href = 'https://blindrank-2026.vercel.app/pt-BR/?pin=' + pin;
+        }, 300);
+      }
     }
 
     inputs.forEach((input, idx) => {

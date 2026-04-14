@@ -5,7 +5,11 @@
       "Bash(gh repo:*)",
       "Bash(vercel --version)",
       "Bash(vercel whoami:*)",
-      "Bash(npx vercel:*)"
+      "Bash(npx vercel:*)",
+      "Bash(grep -l \"InputOTP\\\\|verification\\\\|auth\" \"C:/Users/Alexandre/Developer/blindrank/components\"/*.tsx)",
+      "WebSearch",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm run:*)"
     ]
   }
 }

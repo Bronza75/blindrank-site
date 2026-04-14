@@ -933,7 +933,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
       <div class="how__step reveal">
         <div class="how__step-number">02</div>
         <h3 class="how__step-title">Os degustadores entram pelo PIN</h3>
-        <p class="how__step-text">Sem cadastro, sem app para instalar. Cada um avalia no próprio celular, às cegas, sem saber o que os outros estão dando.</p>
+        <p class="how__step-text">Sem cadastro, sem app para instalar. Cada um avalia no próprio celular de forma independente.</p>
         <div class="how__step-device">
           <img src="./assets/images/blindrank-pin-entry.png" alt="Tela de entrada por PIN no BlindRank, 4 dígitos">
         </div>
@@ -941,7 +941,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
       <div class="how__step reveal">
         <div class="how__step-number">03</div>
         <h3 class="how__step-title">O resultado se forma</h3>
-        <p class="how__step-text">Quando todos terminam, o sistema compila o resultado do grupo. Você revela os rótulos no momento que escolher. A degustação fica registrada para sempre.</p>
+        <p class="how__step-text">Quando todos terminam, o sistema compila o resultado do grupo. O organizador revela os rótulos no momento que escolher. A degustação fica registrada para sempre.</p>
         <div class="how__step-device">
           <img src="./assets/images/blindrank-revelacao.png" alt="Tela de revelação dos rótulos no BlindRank">
         </div>
@@ -956,7 +956,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     <div class="audience__inner reveal">
       <div class="section__eyebrow">Para quem é</div>
       <p class="audience__text">
-        Para confrarias que querem organizar uma degustação sem depender de planilha. Para sommeliers que querem conduzir com rigor sem precisar anotar a nota de cada participante. Para produtores e importadores que querem registrar os preferidos dos seus consumidores nos eventos que organizam.
+        Para confrarias que querem organizar uma degustação sem depender de planilha. Para sommeliers que querem conduzir degustações com rigor sem precisar coletar individualmente as avaliações de cada participante. Para produtores e importadores que querem registrar as preferências dos seus consumidores. Para quem acredita que vinho não se julga pelo rótulo.
       </p>
       <p class="audience__text" style="margin-top: 24px;">
         <strong>Para quem quer promover uma degustação sem transformar o evento em trabalho administrativo.</strong>
@@ -1022,7 +1022,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
         <div class="moment__content">
           <div class="moment__number">Momento quatro</div>
           <h3 class="moment__title">A revelação.</h3>
-          <p class="moment__text">Quando todos terminam, o ranking se forma. O organizador revela os rótulos no momento que decidir. Todos descobrem juntos qual era o vinho número um.</p>
+          <p class="moment__text">Quando todos terminam, o ranking se forma automaticamente. O organizador revela os rótulos no momento que decidir. Todos descobrem juntos a ordem de preferência do grupo.</p>
         </div>
         <div class="moment__visual">
           <div class="moment__device">
@@ -1064,23 +1064,23 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
       <ul class="method__list reveal">
         <li class="method__item">
           <span class="method__item-label">Modos</span>
-          <span class="method__item-text">Às cegas ou às claras. Na degustação às cegas, os vinhos aparecem só por número. Às claras, os rótulos ficam visíveis desde o início.</span>
+          <span class="method__item-text">Às cegas ou às claras. Na degustação às cegas, os vinhos são identificados só por um número. Às claras, a identidade dos vinhos fica visível desde o início para os degustadores.</span>
         </li>
         <li class="method__item">
           <span class="method__item-label">Métodos</span>
-          <span class="method__item-text">Modo nota (cada degustador dá uma nota) ou modo ranking (cada degustador ordena os vinhos). Escalas disponíveis: 20 pontos, 100 pontos ou 1 a 10.</span>
+          <span class="method__item-text">Modo nota (cada degustador dá uma nota) ou modo ranking (cada degustador ordena os vinhos de acordo com a sua preferência). No modo nota o organizador escolhe a escala: 20pts, 100pts ou 1-10.</span>
         </li>
         <li class="method__item">
           <span class="method__item-label">Agregação</span>
-          <span class="method__item-text">Média simples como base. Possibilidade de descartar a nota mais alta e a mais baixa antes de calcular.</span>
+          <span class="method__item-text">Média simples como base. Possibilidade de exclusão dos extremos, descartando a nota mais alta e a mais baixa antes de calcular.</span>
         </li>
         <li class="method__item">
           <span class="method__item-label">Desempate</span>
-          <span class="method__item-text">Três critérios em cascata. Na prática, empate não acontece.</span>
+          <span class="method__item-text">Organizador pode permitir ou não empate. Aplicação automática de três critérios de desempate em cascata.</span>
         </li>
         <li class="method__item">
           <span class="method__item-label">Acervo</span>
-          <span class="method__item-text">Toda degustação fica salva. Suas notas ficam salvas. Você pode comparar suas avaliações para o mesmo vinho em ocasiões diferentes, dois anos depois. <em>Registro permanente.</em></span>
+          <span class="method__item-text">Todas as degustações ficam salvas. Suas notas ficam salvas. Você pode comparar suas avaliações para o mesmo vinho em ocasiões diferentes. Registro permanente.</span>
         </li>
       </ul>
     </div>
@@ -1090,9 +1090,9 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
        CTA FINAL
        ============================================================ -->
   <section class="cta-final">
-    <p class="cta-final__text reveal">A criação leva dois minutos. A degustação leva o tempo do jantar. O resultado fica para sempre.</p>
+    <p class="cta-final__text reveal">A criação da degustação no app leva dois minutos. A degustação leva o tempo do jantar. O resultado fica para sempre.</p>
     <div class="reveal">
-      <a href="https://blindrank-2026.vercel.app/pt-BR/auth" class="btn-accent">Criar uma degustação</a>
+      <a href="https://blindrank-2026.vercel.app/pt-BR/auth?tab=criar-conta" class="btn-accent">Criar uma degustação</a>
     </div>
   </section>
 

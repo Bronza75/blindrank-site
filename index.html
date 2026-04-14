@@ -175,7 +175,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     flex-direction: column;
     align-items: center;
     gap: 0;
-    margin-top: 32px;
+    margin: 32px auto 0;
     background: #ffffff;
     border: 1px solid rgba(10,10,10,0.06);
     border-radius: 20px;
@@ -189,8 +189,9 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
   /* PIN row */
   .hero__pin-row {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
   }
   .hero__pin-label {
     font-family: var(--font-display);
@@ -280,6 +281,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
   .hero__cta-row {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 28px;
     flex-wrap: wrap;
   }
@@ -436,6 +438,25 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     line-height: 1.55;
     color: var(--t-text-2);
     max-width: 32ch;
+  }
+
+  /* Device frame inside each step */
+  .how__step-device {
+    margin-top: 32px;
+    width: 100%;
+    max-width: 220px;
+    border-radius: 24px;
+    background: #f6f4f0;
+    padding: 8px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 8px 28px rgba(0,0,0,0.08);
+    border: 1px solid rgba(10,10,10,0.06);
+  }
+  .how__step-device img {
+    border-radius: 18px;
+    width: 100%;
+    display: block;
   }
 
   /* ============================================================
@@ -643,6 +664,71 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
   }
 
   /* ============================================================
+     SCAN INTELIGENTE — destaque do diferencial de IA
+     ============================================================ */
+  .scan {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: clamp(80px, 12vh, 140px) var(--gutter);
+  }
+  .scan__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items: center;
+  }
+  .scan__eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--t-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scan__eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+  }
+  .scan__title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    margin-top: 20px;
+    color: var(--t-text-1);
+  }
+  .scan__text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--t-text-2);
+    margin-top: 20px;
+    max-width: 44ch;
+  }
+  .scan__device {
+    justify-self: center;
+    width: 100%;
+    max-width: 320px;
+    border-radius: 32px;
+    background: #f6f4f0;
+    padding: 10px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 16px 50px rgba(0,0,0,0.10);
+    border: 1px solid rgba(10,10,10,0.06);
+  }
+  .scan__device img {
+    border-radius: 24px;
+    width: 100%;
+    display: block;
+  }
+
+  /* ============================================================
      CTA FINAL — centralizado, contraste com hero
      ============================================================ */
   .cta-final {
@@ -756,6 +842,11 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     .moment--reverse .moment__visual { order: 1; }
     .moment__device { max-width: 260px; }
 
+    .how__step-device { max-width: 180px; }
+
+    .scan__inner { grid-template-columns: 1fr; gap: 40px; }
+    .scan__device { max-width: 260px; }
+
     .method__inner { grid-template-columns: 1fr; gap: 40px; }
     .method__item { grid-template-columns: 1fr; gap: 8px; }
 
@@ -814,7 +905,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
 
     <div class="hero__device">
       <div class="hero__device-frame">
-        <img src="./assets/images/blindrank-step-tasting-progresso.png" alt="Tela de avaliação às cegas no BlindRank, vinhos numerados e painel de notas">
+        <img src="./assets/images/blindrank-ranking-final.png" alt="Ranking final de degustação às cegas no BlindRank com 6 vinhos classificados">
       </div>
     </div>
   </section>
@@ -836,16 +927,25 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
         <div class="how__step-number">01</div>
         <h3 class="how__step-title">Você monta a degustação</h3>
         <p class="how__step-text">Define quantos vinhos, se será às cegas ou às claras, o método de avaliação (nota ou ranking) e a escala (10, 20 ou 100 pontos). Um PIN único é gerado para compartilhar com a mesa.</p>
+        <div class="how__step-device">
+          <img src="./assets/images/blindrank-criar-degustacao.png" alt="Tela de criação de degustação no BlindRank">
+        </div>
       </div>
       <div class="how__step reveal">
         <div class="how__step-number">02</div>
         <h3 class="how__step-title">Os degustadores entram pelo PIN</h3>
         <p class="how__step-text">Sem cadastro, sem app para instalar. Cada um avalia no próprio celular, às cegas, sem saber o que os outros estão dando.</p>
+        <div class="how__step-device">
+          <img src="./assets/images/blindrank-pin-entry.png" alt="Tela de entrada por PIN no BlindRank, 4 dígitos">
+        </div>
       </div>
       <div class="how__step reveal">
         <div class="how__step-number">03</div>
         <h3 class="how__step-title">O resultado se forma</h3>
         <p class="how__step-text">Quando todos terminam, o sistema compila o resultado do grupo. Você revela os rótulos no momento que escolher. A degustação fica registrada para sempre.</p>
+        <div class="how__step-device">
+          <img src="./assets/images/blindrank-revelacao.png" alt="Tela de revelação dos rótulos no BlindRank">
+        </div>
       </div>
     </div>
   </section>
@@ -872,53 +972,86 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
   <section class="moments">
     <div class="moments__inner">
       <div class="moments__header reveal">
-        <div class="section__eyebrow">No celular do degustador</div>
-        <h2 class="moments__title">O que acontece do outro lado da mesa.</h2>
+        <div class="section__eyebrow">A jornada completa</div>
+        <h2 class="moments__title">Da garrafa ao ranking, tudo no celular.</h2>
       </div>
 
-      <!-- Momento 1 — avaliando -->
+      <!-- Momento 1 — scan de rótulo -->
       <article class="moment reveal">
         <div class="moment__content">
           <div class="moment__number">Momento um</div>
-          <h3 class="moment__title">Toque no número, escolha a nota.</h3>
-          <p class="moment__text">Cada vinho aparece só por número. O degustador toca, o painel sobe, dá a nota e passa para o próximo. Funciona à meia-luz de restaurante.</p>
+          <h3 class="moment__title">Fotografe o rótulo.</h3>
+          <p class="moment__text">Aponte a câmera para a garrafa. O BlindRank identifica nome, produtor e safra automaticamente. Sem digitar nada.</p>
         </div>
         <div class="moment__visual">
           <div class="moment__device">
-            <img src="./assets/images/blindrank-step-tasting-inicio.png" alt="StepTasting do BlindRank no início, vinhos numerados">
+            <img src="./assets/images/blindrank-scan-rotulo.png" alt="Scan de rótulo por câmera no BlindRank com identificação automática">
           </div>
         </div>
       </article>
 
-      <!-- Momento 2 — terminado -->
+      <!-- Momento 2 — avaliação às cegas -->
       <article class="moment moment--reverse reveal">
         <div class="moment__content">
           <div class="moment__number">Momento dois</div>
-          <h3 class="moment__title">O resultado se forma em tempo real.</h3>
-          <p class="moment__text">O degustador atribui suas notas, vinho a vinho, sem nenhum trabalho extra. Sem planilha, sem confusão, sem anotações perdidas no guardanapo do restaurante.</p>
+          <h3 class="moment__title">Avalie às cegas.</h3>
+          <p class="moment__text">Cada vinho aparece só por número. O degustador toca, dá a nota e passa para o próximo. Funciona à meia-luz de restaurante. Sem planilha, sem confusão.</p>
         </div>
         <div class="moment__visual">
           <div class="moment__device">
-            <img src="./assets/images/blindrank-step-tasting-completo.png" alt="StepTasting completo com todos os vinhos avaliados">
+            <img src="./assets/images/blindrank-step-tasting-progresso.png" alt="Tela de avaliação às cegas no BlindRank, vinhos numerados">
           </div>
         </div>
       </article>
 
-      <!-- Momento 3 — espera + revelação -->
+      <!-- Momento 3 — painel do organizador -->
       <article class="moment reveal">
         <div class="moment__content">
           <div class="moment__number">Momento três</div>
-          <h3 class="moment__title">A revelação.</h3>
-          <p class="moment__text">Quando termina de avaliar, o degustador envia suas notas. O organizador revela os rótulos no momento que decidir. Todos descobrem juntos.</p>
+          <h3 class="moment__title">Acompanhe em tempo real.</h3>
+          <p class="moment__text">O organizador vê quem já avaliou, quem falta e o progresso da mesa. Tudo atualiza sozinho, sem precisar perguntar.</p>
         </div>
         <div class="moment__visual">
           <div class="moment__device">
-            <img src="./assets/images/blindrank-aguardando-resultado.png" alt="Tela de aguardando o resultado com favorito destacado">
+            <img src="./assets/images/blindrank-dashboard-org.png" alt="Dashboard do organizador no BlindRank com progresso em tempo real">
+          </div>
+        </div>
+      </article>
+
+      <!-- Momento 4 — revelação -->
+      <article class="moment moment--reverse reveal">
+        <div class="moment__content">
+          <div class="moment__number">Momento quatro</div>
+          <h3 class="moment__title">A revelação.</h3>
+          <p class="moment__text">Quando todos terminam, o ranking se forma. O organizador revela os rótulos no momento que decidir. Todos descobrem juntos qual era o vinho número um.</p>
+        </div>
+        <div class="moment__visual">
+          <div class="moment__device">
+            <img src="./assets/images/blindrank-revelacao.png" alt="Tela de revelação dos rótulos no BlindRank">
           </div>
         </div>
       </article>
     </div>
   </section>
+
+  <!-- ============================================================
+       SCAN INTELIGENTE — diferencial de IA
+       ============================================================ -->
+  <section class="scan">
+    <div class="scan__inner reveal">
+      <div class="scan__content">
+        <div class="scan__eyebrow">Identificação por IA</div>
+        <h2 class="scan__title">Aponte a câmera. O resto é automático.</h2>
+        <p class="scan__text">Fotografe o rótulo da garrafa e o BlindRank extrai nome, produtor, safra e região usando inteligência artificial. Funciona com qualquer rótulo, em qualquer idioma. Se a identificação não for perfeita, você edita com um toque.</p>
+      </div>
+      <div class="scan__device">
+        <img src="./assets/images/blindrank-scan-confirmado.png" alt="Rótulo de vinho identificado automaticamente pelo BlindRank com dados extraídos">
+      </div>
+    </div>
+  </section>
+
+  <!-- Separador editorial -->
+  <div class="rule"><div class="rule__line"></div></div>
 
   <!-- ============================================================
        MÉTODO — colofão técnico

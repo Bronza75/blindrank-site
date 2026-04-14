@@ -169,12 +169,21 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     letter-spacing: 0;
   }
 
-  /* ── Hero actions: two paths ── */
+  /* ── Hero actions: card with two paths ── */
   .hero__actions {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 0;
-    margin-top: 8px;
+    margin-top: 32px;
+    background: #ffffff;
+    border: 1px solid rgba(10,10,10,0.06);
+    border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 4px 16px rgba(0,0,0,0.06);
+    max-width: 360px;
   }
 
   /* PIN row */
@@ -249,7 +258,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     align-items: center;
     gap: 16px;
     margin: 20px 0;
-    max-width: 280px;
+    width: 100%;
   }
   .hero__divider::before,
   .hero__divider::after {
@@ -733,7 +742,7 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     .hero__pin-input { width: 40px; height: 48px; font-size: 20px; }
     .hero__pin-inputs { gap: 6px; }
     .hero__pin-row { gap: 10px; }
-    .hero__divider { max-width: 240px; }
+    .hero__actions { padding: 24px 20px; max-width: 320px; }
 
     .how__steps { grid-template-columns: 1fr; gap: 56px; }
     .how__step-number { font-size: 88px; }

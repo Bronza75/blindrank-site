@@ -28,8 +28,8 @@
     --t-text-3: #767676;
     --t-accent: #8B1A00;
     --t-accent-hover: #6B1200;
+    --t-error: #B91C1C;
     --t-rule: rgba(10,10,10,0.08);
-    --t-rule-strong: rgba(10,10,10,0.15);
     --font-display: 'Eudoxus Sans', system-ui, -apple-system, sans-serif;
     --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
     --max-w: 1240px;
@@ -67,10 +67,7 @@
     justify-content: space-between;
     gap: 24px;
   }
-  .site-header__logo img {
-    height: 56px;
-    width: auto;
-  }
+  .site-header__logo img { height: 56px; width: auto; }
   .site-header__home-link {
     font-family: var(--font-body);
     font-size: 13px;
@@ -115,39 +112,106 @@
     margin-bottom: 48px;
   }
 
-  /* PIN inputs */
+  /* ── PIN box inputs ── */
   .pin-inputs {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 12px;
     margin-bottom: 40px;
   }
   .pin-input {
-    width: 64px;
-    height: 80px;
-    border: none;
-    border-bottom: 3px solid var(--t-rule-strong);
-    background: transparent;
+    width: 56px;
+    height: 64px;
+    border: 2px solid rgba(10,10,10,0.12);
+    border-radius: 12px;
+    background: var(--t-bg);
     font-family: var(--font-display);
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 600;
     text-align: center;
     color: var(--t-text-1);
-    caret-color: var(--t-accent);
+    caret-color: transparent;
     outline: none;
-    transition: border-color 200ms ease;
+    transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease, transform 200ms ease;
     -moz-appearance: textfield;
+    position: relative;
   }
   .pin-input::-webkit-outer-spin-button,
   .pin-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
+
+  /* Focus: accent ring */
   .pin-input:focus {
-    border-bottom-color: var(--t-accent);
+    border-color: var(--t-accent);
+    box-shadow: 0 0 0 3px rgba(139,26,0,0.10);
   }
+
+  /* Filled: bege bg + solid border */
   .pin-input.filled {
-    border-bottom-color: var(--t-text-1);
+    background: #f6f4f0;
+    border-color: var(--t-text-1);
+    box-shadow: none;
+  }
+
+  /* Success flash */
+  .pin-input.success {
+    border-color: var(--t-accent);
+    background: rgba(139,26,0,0.06);
+    transform: scale(1.04);
+  }
+
+  /* Error: red border + shake */
+  .pin-input.error {
+    border-color: var(--t-error);
+    box-shadow: 0 0 0 3px rgba(185,28,28,0.10);
+    animation: pin-shake 400ms ease;
+  }
+
+  /* Number pop-in */
+  .pin-input.pop {
+    animation: pin-number-pop 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes pin-number-pop {
+    0%   { transform: scale(0.7); }
+    65%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes pin-shake {
+    0%, 100% { transform: translateX(0); }
+    20%  { transform: translateX(-4px); }
+    40%  { transform: translateX(4px); }
+    60%  { transform: translateX(-4px); }
+    80%  { transform: translateX(4px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pin-input.pop { animation: none; }
+    .pin-input.error { animation: none; }
+    .pin-input.success { transform: none; }
+  }
+
+  /* Fake caret */
+  .pin-input.caret::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 24px;
+    background: var(--t-accent);
+    border-radius: 1px;
+    animation: caret-blink 1s step-end infinite;
+    pointer-events: none;
+  }
+
+  @keyframes caret-blink {
+    0%, 70%, 100% { opacity: 1; }
+    20%, 50%      { opacity: 0; }
   }
 
   /* Button */
@@ -165,7 +229,7 @@
     border: none;
     border-radius: 9999px;
     cursor: pointer;
-    transition: background 200ms ease, transform 200ms ease, opacity 200ms ease;
+    transition: background 200ms ease, transform 200ms ease;
     letter-spacing: -0.005em;
   }
   .btn-accent:hover:not(:disabled) {
@@ -213,12 +277,8 @@
   }
 
   @media (max-width: 480px) {
-    .pin-input {
-      width: 56px;
-      height: 68px;
-      font-size: 30px;
-    }
-    .pin-inputs { gap: 12px; }
+    .pin-input { width: 52px; height: 60px; font-size: 24px; }
+    .pin-inputs { gap: 10px; }
   }
 </style>
 </head>
@@ -259,54 +319,86 @@
   </footer>
 
   <script>
+    const APP_URL = 'https://blindrank-2026.vercel.app/pt-BR/';
     const inputs = document.querySelectorAll('.pin-input');
     const form = document.getElementById('pin-form');
     const btn = form.querySelector('.btn-accent');
+    let submitting = false;
 
     function getPin() {
       return Array.from(inputs).map(i => i.value).join('');
     }
 
-    function updateButton() {
+    function redirect(pin) {
+      if (submitting) return;
+      submitting = true;
+
+      // Success flash
+      inputs.forEach(i => i.classList.add('success'));
+
+      setTimeout(() => {
+        window.location.href = APP_URL + '?pin=' + pin;
+      }, 400);
+    }
+
+    function updateState() {
       const pin = getPin();
       btn.disabled = pin.length < 4;
+
       inputs.forEach(i => {
         i.classList.toggle('filled', i.value.length > 0);
       });
+
       if (pin.length === 4) {
-        setTimeout(() => {
-          window.location.href = 'https://blindrank-2026.vercel.app/pt-BR/?pin=' + pin;
-        }, 300);
+        redirect(pin);
       }
     }
 
     inputs.forEach((input, idx) => {
+      // Digit typed
       input.addEventListener('input', () => {
         input.value = input.value.replace(/\D/g, '').slice(0, 1);
-        if (input.value && idx < inputs.length - 1) {
-          inputs[idx + 1].focus();
+
+        if (input.value) {
+          // Pop animation
+          input.classList.remove('pop');
+          void input.offsetWidth; // force reflow
+          input.classList.add('pop');
+
+          if (idx < inputs.length - 1) {
+            inputs[idx + 1].focus();
+          }
         }
-        updateButton();
+        updateState();
       });
 
+      // Backspace
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !input.value && idx > 0) {
           inputs[idx - 1].focus();
           inputs[idx - 1].value = '';
-          updateButton();
+          inputs[idx - 1].classList.remove('filled', 'pop');
+          updateState();
         }
       });
 
+      // Paste
       input.addEventListener('paste', (e) => {
         e.preventDefault();
         const paste = (e.clipboardData || window.clipboardData)
           .getData('text').replace(/\D/g, '').slice(0, 4);
         for (let i = 0; i < paste.length && i < inputs.length; i++) {
           inputs[i].value = paste[i];
+          inputs[i].classList.add('filled', 'pop');
         }
         const focusIdx = Math.min(paste.length, inputs.length - 1);
         inputs[focusIdx].focus();
-        updateButton();
+        updateState();
+      });
+
+      // Focus: clear error state
+      input.addEventListener('focus', () => {
+        inputs.forEach(i => i.classList.remove('error'));
       });
     });
 
@@ -314,7 +406,7 @@
       e.preventDefault();
       const pin = getPin();
       if (pin.length === 4) {
-        window.location.href = 'https://blindrank-2026.vercel.app/pt-BR/?pin=' + pin;
+        redirect(pin);
       }
     });
   </script>

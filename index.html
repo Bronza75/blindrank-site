@@ -210,6 +210,72 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     border-color: var(--t-text-1);
   }
 
+  /* ── Hero inline PIN ── */
+  .hero__pin-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .hero__pin-label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--t-text-3);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .hero__pin-inputs {
+    display: flex;
+    gap: 8px;
+  }
+  .hero__pin-input {
+    width: 42px;
+    height: 48px;
+    border: 2px solid rgba(10,10,10,0.12);
+    border-radius: 10px;
+    background: var(--t-bg);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--t-text-1);
+    caret-color: transparent;
+    outline: none;
+    transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+    -moz-appearance: textfield;
+  }
+  .hero__pin-input::-webkit-outer-spin-button,
+  .hero__pin-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .hero__pin-input:focus {
+    border-color: var(--t-accent);
+    box-shadow: 0 0 0 3px rgba(139,26,0,0.10);
+  }
+  .hero__pin-input.filled {
+    background: #f6f4f0;
+    border-color: var(--t-text-1);
+    box-shadow: none;
+  }
+  .hero__pin-input.pop {
+    animation: hero-pin-pop 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .hero__pin-input.success {
+    border-color: var(--t-accent);
+    background: rgba(139,26,0,0.06);
+    transform: scale(1.04);
+  }
+  @keyframes hero-pin-pop {
+    0%   { transform: scale(0.7); }
+    65%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__pin-input.pop { animation: none; }
+    .hero__pin-input.success { transform: none; }
+  }
+
   /* Hero device — screenshot real do StepTasting */
   .hero__device {
     position: relative;
@@ -696,7 +762,16 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
 
       <div class="hero__cta-row">
         <a href="https://blindrank-2026.vercel.app/pt-BR/auth" class="btn-accent">Criar uma degustação</a>
-        <a href="/pin/" class="hero__secondary-link">Tenho um PIN para entrar</a>
+      </div>
+
+      <div class="hero__pin-row">
+        <span class="hero__pin-label">Tenho um PIN</span>
+        <div class="hero__pin-inputs">
+          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 1">
+          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 2">
+          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 3">
+          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 4">
+        </div>
       </div>
     </div>
 
@@ -864,6 +939,63 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     </div>
     <div class="site-footer__meta">blindrank.wine · 2026</div>
   </footer>
+
+  <script>
+    (function() {
+      var APP = 'https://blindrank-2026.vercel.app/pt-BR/';
+      var pins = document.querySelectorAll('.hero__pin-input');
+      var submitting = false;
+
+      function getPin() {
+        return Array.from(pins).map(function(i) { return i.value; }).join('');
+      }
+
+      function redirect(pin) {
+        if (submitting) return;
+        submitting = true;
+        pins.forEach(function(i) { i.classList.add('success'); });
+        setTimeout(function() {
+          window.location.href = APP + '?pin=' + pin;
+        }, 400);
+      }
+
+      pins.forEach(function(input, idx) {
+        input.addEventListener('input', function() {
+          input.value = input.value.replace(/\D/g, '').slice(0, 1);
+          if (input.value) {
+            input.classList.remove('pop');
+            void input.offsetWidth;
+            input.classList.add('pop', 'filled');
+            if (idx < pins.length - 1) pins[idx + 1].focus();
+          }
+          var pin = getPin();
+          if (pin.length === 4) redirect(pin);
+        });
+
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Backspace' && !input.value && idx > 0) {
+            pins[idx - 1].focus();
+            pins[idx - 1].value = '';
+            pins[idx - 1].classList.remove('filled', 'pop');
+          }
+        });
+
+        input.addEventListener('paste', function(e) {
+          e.preventDefault();
+          var paste = (e.clipboardData || window.clipboardData)
+            .getData('text').replace(/\D/g, '').slice(0, 4);
+          for (var i = 0; i < paste.length && i < pins.length; i++) {
+            pins[i].value = paste[i];
+            pins[i].classList.add('filled', 'pop');
+          }
+          var focusIdx = Math.min(paste.length, pins.length - 1);
+          pins[focusIdx].focus();
+          var pin = getPin();
+          if (pin.length === 4) redirect(pin);
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>

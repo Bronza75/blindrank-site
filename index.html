@@ -169,73 +169,40 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
     letter-spacing: 0;
   }
 
-  .hero__cta-row {
+  /* ── Hero actions: two paths ── */
+  .hero__actions {
     display: flex;
-    align-items: center;
-    gap: 28px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 8px;
   }
 
-  .btn-accent {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 56px;
-    padding: 0 32px;
-    background: var(--t-accent);
-    color: #ffffff;
-    font-family: var(--font-display);
-    font-size: 17px;
-    font-weight: 600;
-    border-radius: 9999px;
-    transition: background 200ms ease, transform 200ms ease;
-    letter-spacing: -0.005em;
-  }
-  .btn-accent:hover {
-    background: var(--t-accent-hover);
-    transform: translateY(-1px);
-  }
-
-  .hero__secondary-link {
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--t-text-2);
-    font-weight: 500;
-    border-bottom: 1px solid var(--t-rule-strong);
-    padding-bottom: 2px;
-    transition: color 200ms ease, border-color 200ms ease;
-  }
-  .hero__secondary-link:hover {
-    color: var(--t-text-1);
-    border-color: var(--t-text-1);
-  }
-
-  /* ── Hero inline PIN ── */
+  /* PIN row */
   .hero__pin-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 14px;
   }
   .hero__pin-label {
-    font-family: var(--font-body);
-    font-size: 13px;
-    color: var(--t-text-3);
-    font-weight: 500;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--t-text-1);
     white-space: nowrap;
+    letter-spacing: -0.01em;
   }
   .hero__pin-inputs {
     display: flex;
     gap: 8px;
   }
   .hero__pin-input {
-    width: 42px;
-    height: 56px;
+    width: 44px;
+    height: 52px;
     border: 2px solid rgba(10,10,10,0.12);
     border-radius: 10px;
     background: var(--t-bg);
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
     text-align: center;
     color: var(--t-text-1);
@@ -274,6 +241,57 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
   @media (prefers-reduced-motion: reduce) {
     .hero__pin-input.pop { animation: none; }
     .hero__pin-input.success { transform: none; }
+  }
+
+  /* Divider "ou" */
+  .hero__divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 20px 0;
+    max-width: 280px;
+  }
+  .hero__divider::before,
+  .hero__divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--t-rule-strong);
+  }
+  .hero__divider-text {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--t-text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* CTA row */
+  .hero__cta-row {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .btn-accent {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    padding: 0 28px;
+    background: var(--t-accent);
+    color: #ffffff;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 9999px;
+    transition: background 200ms ease, transform 200ms ease;
+    letter-spacing: -0.005em;
+  }
+  .btn-accent:hover {
+    background: var(--t-accent-hover);
+    transform: translateY(-1px);
   }
 
   /* Hero device — screenshot real do StepTasting */
@@ -712,6 +730,10 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
       justify-self: center;
     }
     .hero__device::before { display: none; }
+    .hero__pin-input { width: 40px; height: 48px; font-size: 20px; }
+    .hero__pin-inputs { gap: 6px; }
+    .hero__pin-row { gap: 10px; }
+    .hero__divider { max-width: 240px; }
 
     .how__steps { grid-template-columns: 1fr; gap: 56px; }
     .how__step-number { font-size: 88px; }
@@ -760,18 +782,24 @@ posthog.init("phc_yEhLsY4ea4jdSgnRVYP24UDh6GHh8ekR5nSWL9ocC3e5",{api_host:"https
         <span class="hero__headline-secondary">Cada um avalia no próprio celular. O ranking se forma sozinho. Você revela os rótulos quando quiser.</span>
       </h1>
 
-      <div class="hero__pin-row">
-        <span class="hero__pin-label">Tenho um PIN</span>
-        <div class="hero__pin-inputs">
-          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 1">
-          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 2">
-          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 3">
-          <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 4">
+      <div class="hero__actions">
+        <div class="hero__pin-row">
+          <span class="hero__pin-label">Tenho um PIN</span>
+          <div class="hero__pin-inputs">
+            <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 1">
+            <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 2">
+            <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 3">
+            <input class="hero__pin-input" type="text" inputmode="numeric" maxlength="1" pattern="[0-9]" aria-label="PIN dígito 4">
+          </div>
         </div>
-      </div>
 
-      <div class="hero__cta-row">
-        <a href="https://blindrank-2026.vercel.app/pt-BR/auth" class="btn-accent">Criar uma degustação</a>
+        <div class="hero__divider">
+          <span class="hero__divider-text">ou</span>
+        </div>
+
+        <div class="hero__cta-row">
+          <a href="https://blindrank-2026.vercel.app/pt-BR/auth" class="btn-accent">Criar uma degustação</a>
+        </div>
       </div>
     </div>
 
